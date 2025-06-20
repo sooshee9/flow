@@ -1,0 +1,74 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Allow users to read their own role info
+    match /users/{userId} {
+      allow read: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Main complaint collection rule
+    match /complaints/{complaintId} {
+
+      allow read: if isAuthorized();
+
+      allow update: if (
+        isComplaintUser() && onlyAllowedComplaintFieldsChanged()
+      ) || (
+        isMaintenanceUser() && onlyAllowedMaintenanceFieldsChanged()
+      ) || (
+        isAdmin()
+      );
+
+      // Use UID-based email check for complaint creation
+      allow create: if (
+        isComplaintUser() &&
+        request.resource.data.createdBy == get(/databases/$(database)/documents/users/$(request.auth.uid)).data.email
+      ) || isAdmin();
+
+      allow delete: if isAdmin();
+    }
+
+    // Helper functions
+    function getRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isAdmin() {
+      return request.auth != null && getRole() == "admin";
+    }
+
+    function isComplaintUser() {
+      return request.auth != null && getRole() == "complaint";
+    }
+
+    function isMaintenanceUser() {
+      return request.auth != null && getRole() == "maintenance";
+    }
+
+    function isAuthorized() {
+      return isAdmin() || isComplaintUser() || isMaintenanceUser();
+    }
+
+    function onlyAllowedComplaintFieldsChanged() {
+      // Only allow changes to these fields, and no others
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+        "complaintDate", "machineName", "complaintDescription", "priority"
+      ]);
+    }
+
+    function onlyAllowedMaintenanceFieldsChanged() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+        "actionDate",
+        "maintenanceRemarks",
+        "initialInspectionDate",
+        "estimatedEndDate",
+        "finalizationDate",
+        "department",
+        "assignedTo",
+        "materialsUsed",
+        "history"
+      ]);
+    }
+  }
+}
