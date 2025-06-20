@@ -10,13 +10,13 @@ import {gemini20Flash} from "@genkit-ai/vertexai";
 // function from a Genkit action. It automatically implements streaming if your flow does.
 // The https library also has other utility methods such as hasClaim, which verifies that
 // a caller's token has a specific claim (optionally matching a specific value)
-import { onCallGenkit, hasClaim } from "firebase-functions/https";
+// import { onCallGenkit, hasClaim } from "firebase-functions/https";
 
 // Genkit models generally depend on an API key. APIs should be stored in Cloud Secret Manager so that
 // access to these sensitive values can be controlled. defineSecret does this for you automatically.
 // If you are using Google generative AI you can get an API key at https://aistudio.google.com/app/apikey
-import { defineSecret } from "firebase-functions/params";
-const apiKey = defineSecret("GOOGLE_GENAI_API_KEY");
+// import { defineSecret } from "firebase-functions/params";
+// const apiKey = defineSecret("GOOGLE_GENAI_API_KEY");
 
 // The Firebase telemetry plugin exports a combination of metrics, traces, and logs to Google Cloud
 // Observability. See https://firebase.google.com/docs/genkit/observability/telemetry-collection.
@@ -62,16 +62,6 @@ const menuSuggestionFlow = ai.defineFlow({
   }
 );
 
-export const menuSuggestion = onCallGenkit({
-  // Uncomment to enable AppCheck. This can reduce costs by ensuring only your Verified
-  // app users can use your API. Read more at https://firebase.google.com/docs/app-check/cloud-functions
-  // enforceAppCheck: true,
-
-  // authPolicy can be any callback that accepts an AuthData (a uid and tokens dictionary) and the
-  // request data. The isSignedIn() and hasClaim() helpers can be used to simplify. The following
-  // will require the user to have the email_verified claim, for example.
-  // authPolicy: hasClaim("email_verified"),
-
-  // Grant access to the API key to this function:
-  secrets: [apiKey],
-}, menuSuggestionFlow);
+// export const menuSuggestion = onCallGenkit({
+//   secrets: [apiKey],
+// }, menuSuggestionFlow);
