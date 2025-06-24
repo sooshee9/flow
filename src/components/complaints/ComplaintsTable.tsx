@@ -122,7 +122,7 @@ export function ComplaintsTable({ complaints, onEdit, onDelete, onHistory, curre
               <TableHead className="min-w-[250px]">Description</TableHead>
               <TableHead className="w-[90px]">Priority</TableHead>
               <TableHead className="w-[110px]">Status</TableHead>
-              <TableHead className="w-[200px]">Created By (Email)</TableHead>
+              <TableHead className="w-[200px]">Updated By (Email)</TableHead>
               <TableHead className="w-[160px]">Concerned Department</TableHead>
               <TableHead className="w-[120px]">A. Date</TableHead>
               <TableHead className="min-w-[200px]">Remarks</TableHead>
@@ -193,7 +193,7 @@ export function ComplaintsTable({ complaints, onEdit, onDelete, onHistory, curre
                     {complaint.complaintStatus}
                   </span>
                 </TableCell>
-                <TableCell className="font-mono text-xs">{complaint.createdBy || 'N/A'}</TableCell>
+                <TableCell className="font-mono text-xs">{complaint.updatedBy || 'N/A'}</TableCell>
                 <TableCell style={{ minWidth: 180, fontWeight: 600 }}>{complaint.department && complaint.department !== '' ? complaint.department : 'N/A'}</TableCell>
                 <TableCell>{complaint.actionDate && !isNaN(new Date(complaint.actionDate).getTime()) ? format(new Date(complaint.actionDate), "dd-MM-yy") : "N/A"}</TableCell>
                 <TableCell>{complaint.maintenanceRemarks || "N/A"}</TableCell>

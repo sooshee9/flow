@@ -28,7 +28,7 @@ export const ComplaintHistoryModal: React.FC<ComplaintHistoryModalProps> = ({ op
             {complaint.history.map((h, i) => {
               let label = '';
               if (h.action === 'Created') {
-                label = 'Created by ';
+                label = 'Updated by ';
               } else if (h.action === 'Updated') {
                 label = 'Updated by ';
               } else {

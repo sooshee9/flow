@@ -20,7 +20,7 @@ export interface Complaint {
   initialInspectionDate?: string | null;
   estimatedEndDate?: string | null;
   finalizationDate?: string | null;
-  createdBy: string;
+  updatedBy: string;
   department: string;
   materialsUsed: Array<{
     name: string;

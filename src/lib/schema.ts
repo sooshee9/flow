@@ -23,7 +23,7 @@ export const complaintSchema = z.object({
   initialInspectionDate: z.string().nullable().optional(),
   estimatedEndDate: z.string().nullable().optional(),
   finalizationDate: z.string().nullable().optional(),
-  createdBy: z.string().email('Valid email required'),
+  updatedBy: z.string().email('Valid email required'),
   department: z.string().min(1, 'Department is required'),
   materialsUsed: z.array(z.object({
     name: z.string().min(1, 'Material name required'),

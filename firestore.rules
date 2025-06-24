@@ -13,7 +13,7 @@ service cloud.firestore {
       allow read: if isAuthorized();
 
       allow update: if (
-        isComplaintUser() && onlyAllowedComplaintFieldsChanged()
+        isComplaintUser() && onlyAllowedComplaintFieldsChanged() && isCreatedByUnchanged()
       ) || (
         isMaintenanceUser() && onlyAllowedMaintenanceFieldsChanged()
       ) || (
@@ -69,6 +69,10 @@ service cloud.firestore {
         "materialsUsed",
         "history"
       ]);
+    }
+
+    function isCreatedByUnchanged() {
+      return request.resource.data.updatedBy == resource.data.updatedBy;
     }
   }
 }

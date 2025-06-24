@@ -37,7 +37,7 @@ const ComplaintSchema = z.object({
   initialInspectionDate: z.string().nullable().default(null),
   estimatedEndDate: z.string().nullable().default(null),
   finalizationDate: z.string().nullable().default(null),
-  createdBy: z.string().email('Valid email required'),
+  updatedBy: z.string().email('Valid email required'),
   department: z.string().min(1, 'Department is required'),
   materialsUsed: z
     .array(
@@ -99,7 +99,7 @@ export function ComplaintForm({
       initialInspectionDate: complaint?.initialInspectionDate || null,
       estimatedEndDate: complaint?.estimatedEndDate || null,
       finalizationDate: complaint?.finalizationDate || null,
-      createdBy: complaint?.createdBy || currentUser?.email || '',
+      updatedBy: complaint?.updatedBy || currentUser?.email || '',
       department: complaint?.department || 'Mechanical',
       materialsUsed: complaint?.materialsUsed || [
         { name: '', quantity: '', remarks: '' },
@@ -151,7 +151,7 @@ export function ComplaintForm({
       const payload = {
         ...data,
         assignedTo: data.assignedTo,
-        createdBy: user,
+        updatedBy: user,
         department,
         materialsUsed: materials,
         history: newHistory,

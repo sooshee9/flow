@@ -19,7 +19,7 @@ const ComplaintSchema = z.object({
   initialInspectionDate: z.string().nullable().default(null),
   estimatedEndDate: z.string().nullable().default(null),
   finalizationDate: z.string().nullable().default(null),
-  createdBy: z.string().email('Valid email required'),
+  updatedBy: z.string().email('Valid email required'),
   department: z.string().min(1, 'Department is required'),
   assignedTo: z.string().default('Person A'),
   materialsUsed: z.array(z.object({

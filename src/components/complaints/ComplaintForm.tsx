@@ -37,7 +37,7 @@ const ComplaintSchema = z.object({
   initialInspectionDate: z.string().nullable().default(null),
   estimatedEndDate: z.string().nullable().default(null),
   finalizationDate: z.string().nullable().default(null),
-  createdBy: z.string().email('Valid email required'),
+  updatedBy: z.string().email('Valid email required'),
   department: z.string().min(1, 'Department is required'),
   assignedTo: z.enum(['Person A', 'Person B', 'Person C', 'Person D']).default('Person A'),
   materialsUsed: z
@@ -127,7 +127,7 @@ export function ComplaintForm({
       initialInspectionDate: complaint?.initialInspectionDate || null,
       estimatedEndDate: complaint?.estimatedEndDate || null,
       finalizationDate: complaint?.finalizationDate || null,
-      createdBy: complaint?.createdBy || currentUser?.email || '',
+      updatedBy: complaint?.updatedBy || currentUser?.email || '',
       department: complaint?.department || '',
       assignedTo: (complaint?.assignedTo as AssignedTo) || 'Person A',
       materialsUsed: complaint?.materialsUsed || [
@@ -190,7 +190,7 @@ export function ComplaintForm({
       const payload = {
         ...data,
         assignedTo: data.assignedTo,
-        createdBy: user,
+        updatedBy: user,
         department: data.department, // Use the department from form data, not local state
         materialsUsed: materials,
         history: newHistory,
@@ -432,10 +432,10 @@ export function ComplaintForm({
             />
             <FormField
               control={form.control}
-              name="createdBy"
+              name="updatedBy"
               render={({ field }) => (
                 <AppFormItem>
-                  <AppFormLabel htmlFor={field.name}>Created By (Email)</AppFormLabel>
+                  <AppFormLabel htmlFor={field.name}>Updated By (Email)</AppFormLabel>
                   <AppFormControl>
                     <Input type="email" {...field} id={field.name} name={field.name} value={field.value || ''} readOnly />
                   </AppFormControl>
