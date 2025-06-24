@@ -62,6 +62,36 @@ const menuSuggestionFlow = ai.defineFlow({
   }
 );
 
+// Example data type for a menu suggestion
+interface MenuSuggestion {
+  name: string;
+  createdBy: string; // email
+  // ...other fields
+}
+
+// Simulated database (replace with your actual DB logic)
+const db: Record<string, MenuSuggestion> = {};
+
+// Create function: sets createdBy only on creation
+function createMenuSuggestion(data: Omit<MenuSuggestion, 'createdBy'>, userEmail: string): MenuSuggestion {
+  const newSuggestion: MenuSuggestion = {
+    ...data,
+    createdBy: userEmail, // Set only on creation
+  };
+  db[data.name] = newSuggestion;
+  return newSuggestion;
+}
+
+// Update function: never allows updating createdBy
+function updateMenuSuggestion(name: string, data: Partial<Omit<MenuSuggestion, 'createdBy'>>): MenuSuggestion | null {
+  const existing = db[name];
+  if (!existing) return null;
+  // Always preserve the original createdBy
+  const updated = { ...existing, ...data, createdBy: existing.createdBy };
+  db[name] = updated;
+  return updated;
+}
+
 // export const menuSuggestion = onCallGenkit({
 //   secrets: [apiKey],
 // }, menuSuggestionFlow);
